@@ -1,8 +1,10 @@
 # Estação ADS-B com alertas no Telegram
 
+🇧🇷 Português · [🇬🇧 English](README.en.md)
+
 Guia e código para montar uma estação que recebe sinais de aeronaves (ADS-B, 1090 MHz) com um RTL-SDR e um Raspberry Pi, alimenta o ADS-B Exchange e envia alertas no Telegram quando uma aeronave da sua lista é detectada.
 
-**Guia completo (PDF, em português):** [docs/GUIA_ESTACAO_ADSB.pdf](docs/GUIA_ESTACAO_ADSB.pdf)
+**Guia completo (PDF):** [Português](docs/GUIA_ESTACAO_ADSB.pdf) · [English](docs/ADSB_STATION_GUIDE_EN.pdf)
 
 ## Hardware usado
 
@@ -43,6 +45,10 @@ sudo systemctl daemon-reload && sudo systemctl enable --now radar-bot
 ```
 
 Os passos completos (readsb, tar1090, feed do ADS-B Exchange, criação do bot) estão no PDF.
+
+## Idioma das mensagens
+
+Defina `TG_LANG` no `.env`: `pt` (padrão) ou `en`. Os logs do bot continuam em português.
 
 ## Formato do `aeronaves.json`
 

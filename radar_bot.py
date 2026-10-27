@@ -42,10 +42,43 @@ carregar_env(ENV_FILE)
 TOKEN = os.environ.get("TG_TOKEN")
 CHAT_ID = os.environ.get("TG_CHAT_ID")
 
+# Idioma das mensagens do Telegram: "pt" (padrão) ou "en". / Telegram message language.
+IDIOMA = os.environ.get("TG_LANG", "pt").strip().lower()
+if IDIOMA not in ("pt", "en"):
+    IDIOMA = "pt"
+
+TEXTOS = {
+    "pt": {
+        "online": "🚀 *Radar ADS-B Online!*\n📍 *IP:* `{ip}`\nMonitorando {n} identificadores cadastrados.",
+        "alvo": "📡 *Alvo Identificado!*",
+        "ident": "✈️ *Identificação:*",
+        "callsign": "🆔 *Callsign:*",
+        "hex": "📟 *Hex (ICAO):*",
+        "alt": "📏 *Altitude:*",
+        "vel": "🚀 *Velocidade:*",
+        "rumo": "🧭 *Rumo:*",
+        "squawk": "📻 *Squawk:*",
+        "mapa": "Abrir Mapa Local",
+    },
+    "en": {
+        "online": "🚀 *ADS-B Radar Online!*\n📍 *IP:* `{ip}`\nMonitoring {n} registered identifiers.",
+        "alvo": "📡 *Target Identified!*",
+        "ident": "✈️ *Identification:*",
+        "callsign": "🆔 *Callsign:*",
+        "hex": "📟 *Hex (ICAO):*",
+        "alt": "📏 *Altitude:*",
+        "vel": "🚀 *Speed:*",
+        "rumo": "🧭 *Track:*",
+        "squawk": "📻 *Squawk:*",
+        "mapa": "Open Local Map",
+    },
+}
+T = TEXTOS[IDIOMA]
+
 if not TOKEN or not CHAT_ID:
     log.error(
-        "TG_TOKEN e/ou TG_CHAT_ID não configurados. "
-        "Copie .env.example para .env e preencha os valores."
+        "TG_TOKEN e/ou TG_CHAT_ID não configurados (TG_TOKEN and/or TG_CHAT_ID not set). "
+        "Copie .env.example para .env / Copy .env.example to .env."
     )
     raise SystemExit(1)
 
@@ -125,15 +158,15 @@ def montar_mensagem(nome_exibir: str, callsign: str, hex_id: str, ac: dict, meu_
     squawk = ac.get("squawk", "N/A")
 
     return (
-        f"📡 *Alvo Identificado!*\n"
-        f"✈️ *Identificação:* `{nome_exibir}`\n"
-        f"🆔 *Callsign:* `{callsign if callsign else 'N/A'}`\n"
-        f"📟 *Hex (ICAO):* `{hex_id}`\n"
-        f"📏 *Altitude:* {alt} ft\n"
-        f"🚀 *Velocidade:* {velocidade} kt\n"
-        f"🧭 *Rumo:* {rumo}°\n"
-        f"📻 *Squawk:* `{squawk}`\n\n"
-        f"[Abrir Mapa Local](http://{meu_ip}/tar1090)"
+        f"{T['alvo']}\n"
+        f"{T['ident']} `{nome_exibir}`\n"
+        f"{T['callsign']} `{callsign if callsign else 'N/A'}`\n"
+        f"{T['hex']} `{hex_id}`\n"
+        f"{T['alt']} {alt} ft\n"
+        f"{T['vel']} {velocidade} kt\n"
+        f"{T['rumo']} {rumo}°\n"
+        f"{T['squawk']} `{squawk}`\n\n"
+        f"[{T['mapa']}](http://{meu_ip}/tar1090)"
     )
 
 
@@ -151,10 +184,7 @@ def main():
     log.info(f"Bot iniciado (Filtro Exclusivo) no IP: {meu_ip}")
     time.sleep(2)
 
-    enviar_telegram(
-        f"🚀 *Radar ADS-B Online!*\n📍 *IP:* `{meu_ip}`\n"
-        f"Monitorando {len(banco_aeronaves)} identificadores cadastrados."
-    )
+    enviar_telegram(T["online"].format(ip=meu_ip, n=len(banco_aeronaves)))
 
     while True:
         agora = time.time()
