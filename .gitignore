@@ -1,0 +1,5 @@
+# Credenciais e dados pessoais: nunca versionar
+.env
+aeronaves.json
+__pycache__/
+*.pyc

@@ -1,0 +1,17 @@
+[Unit]
+Description=Bot Radar ADS-B (Telegram)
+After=network-online.target readsb.service adsbexchange-feed.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<SEU_USUARIO>
+WorkingDirectory=/home/<SEU_USUARIO>/radar_bot
+ExecStart=/usr/bin/python3 /home/<SEU_USUARIO>/radar_bot/radar_bot.py
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+[
+  {"nome": "EXEMPLO HELICÓPTERO 01", "callsign": "PPXXX", "hex": ["AAAAAA"]},
+  {"nome": "EXEMPLO RESGATE 02", "callsign": "PRYYY", "hex": ["BBBBBB", "BBBBBC"]},
+  {"nome": "EXEMPLO SEM HEX", "callsign": "PSZZZ", "hex": []}
+]
